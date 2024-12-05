@@ -11,7 +11,7 @@ def main():
     st.sidebar.title("Options")
 
     # Unit selection
-    st.sidebar.subheader("The file values are in Nanometers (nm) or Angstrom (Å)?")
+    st.sidebar.subheader("Files values are in Nanometers (nm) or Angstrom (Å)?")
     unit = st.sidebar.radio("Choose the unit for y-axis:", ("nm", "Å"))
 
     # File upload section
