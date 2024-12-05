@@ -6,6 +6,9 @@ import plotly.express as px
 import os
 
 # Define the app
+
+st.image('HufflePlots.png')
+
 def main():
     st.title("HUFFAPlots: Protein Dynamics Plots")
     st.sidebar.title("Options")
