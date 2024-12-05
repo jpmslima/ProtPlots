@@ -6,8 +6,12 @@ import os
 
 # Define the app
 def main():
-    st.title("RMSD and RMSF Plotting App")
+    st.title("HUFFAPlots: Protein Dynamics Plots")
     st.sidebar.title("Options")
+
+    # Unit selection
+    st.sidebar.subheader("Select Units")
+    unit = st.sidebar.radio("Choose the unit for y-axis:", ("Ångstrom", "nm"))
 
     # File upload section
     st.sidebar.subheader("Upload Files")
@@ -21,7 +25,7 @@ def main():
 
     if use_example:
         rmsd_file = os.path.join(example_folder, "P03891-RMSD-All.csv")
-        rmsf_file = os.path.join(example_folder, "P03891-RMSF-All.csv")
+        rmsf_file = os.path.join(example_folder, "P03891-RMSF-All.tsv")
 
     # Process files and plot
     if rmsd_file or rmsf_file:
@@ -59,9 +63,10 @@ def load_data(file):
         return None
 
 # Function to plot RMSD
-def plot_rmsd(data):
+def plot_rmsd(data, unit):
     try:
         fig = px.line(data, x=data.columns[0], y=data.columns[1:], title="RMSD Plot")
+        fig.update_yaxes(title_text="RMSD (" + unit + ")")
         st.plotly_chart(fig)
         # Download button for the plot
         st.download_button(
@@ -74,9 +79,10 @@ def plot_rmsd(data):
         st.error("Error generating RMSD plot: " + str(e))
 
 # Function to plot RMSF
-def plot_rmsf(data):
+def plot_rmsf(data, unit):
     try:
         fig = px.line(data, x=data.columns[0], y=data.columns[1:], title="RMSF Plot")
+        fig.update_yaxes(title_text="RMSF (" + unit + ")")
         st.plotly_chart(fig)
         # Download button for the plot
         st.download_button(
