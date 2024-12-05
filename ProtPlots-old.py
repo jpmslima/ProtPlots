@@ -1,4 +1,3 @@
-# Re-run the updated Streamlit app code to ensure unit selection and y-axis adjustment works correctly
 # Import necessary libraries
 import streamlit as st
 import pandas as pd
@@ -26,7 +25,7 @@ def main():
 
     if use_example:
         rmsd_file = os.path.join(example_folder, "P03891-RMSD-All.csv")
-        rmsf_file = os.path.join(example_folder, "P03891-RMSF-All.csv")
+        rmsf_file = os.path.join(example_folder, "P03891-RMSF-All.tsv")
 
     # Process files and plot
     if rmsd_file or rmsf_file:
@@ -37,14 +36,14 @@ def main():
             rmsd_data = load_data(rmsd_file)
             if rmsd_data is not None:
                 st.dataframe(rmsd_data.head())
-                plot_rmsd(rmsd_data, unit)
+                plot_rmsd(rmsd_data)
 
         if rmsf_file:
             st.write("### RMSF Data")
             rmsf_data = load_data(rmsf_file)
             if rmsf_data is not None:
                 st.dataframe(rmsf_data.head())
-                plot_rmsf(rmsf_data, unit)
+                plot_rmsf(rmsf_data)
 
 # Function to load data
 def load_data(file):
@@ -53,12 +52,12 @@ def load_data(file):
             if file.endswith(".csv"):
                 return pd.read_csv(file)
             elif file.endswith(".tsv"):
-                return pd.read_csv(file, sep="\	")
+                return pd.read_csv(file, sep="\t")
         else:  # For uploaded files
             if file.name.endswith(".csv"):
                 return pd.read_csv(file)
             elif file.name.endswith(".tsv"):
-                return pd.read_csv(file, sep="\	")
+                return pd.read_csv(file, sep="\t")
     except Exception as e:
         st.error("Error loading file: " + str(e))
         return None
@@ -66,11 +65,7 @@ def load_data(file):
 # Function to plot RMSD
 def plot_rmsd(data, unit):
     try:
-        y_data = data.iloc[:, 1:]  # Select all columns except the first
-        if unit == "nm":
-            y_data = y_data / 10  # Convert Angstrom to nm
-
-        fig = px.line(data, x=data.columns[0], y=y_data.columns, title="RMSD Plot")
+        fig = px.line(data, x=data.columns[0], y=data.columns[1:], title="RMSD Plot")
         fig.update_yaxes(title_text="RMSD (" + unit + ")")
         st.plotly_chart(fig)
         # Download button for the plot
@@ -86,11 +81,7 @@ def plot_rmsd(data, unit):
 # Function to plot RMSF
 def plot_rmsf(data, unit):
     try:
-        y_data = data.iloc[:, 1:]  # Select all columns except the first
-        if unit == "nm":
-            y_data = y_data / 10  # Convert Angstrom to nm
-
-        fig = px.line(data, x=data.columns[0], y=y_data.columns, title="RMSF Plot")
+        fig = px.line(data, x=data.columns[0], y=data.columns[1:], title="RMSF Plot")
         fig.update_yaxes(title_text="RMSF (" + unit + ")")
         st.plotly_chart(fig)
         # Download button for the plot
