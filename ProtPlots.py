@@ -25,8 +25,8 @@ def main():
     example_folder = "example_files"
 
     if use_example:
-        rmsd_file = os.path.join(example_folder, "P03891-RMSD-All.csv")
-        rmsf_file = os.path.join(example_folder, "P03891-RMSF-All.csv")
+        rmsd_file = os.path.join(example_folder, "P03923_WTxN119S_F161L_RMSD.tsv")
+        rmsf_file = os.path.join(example_folder, "P03923_WTxN119S_F161L_RMSF.tsv")
 
     # Process files and plot
     if rmsd_file or rmsf_file:
