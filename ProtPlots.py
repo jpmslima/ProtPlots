@@ -11,8 +11,8 @@ def main():
     st.sidebar.title("Options")
 
     # Unit selection
-    st.sidebar.subheader("Select Units")
-    unit = st.sidebar.radio("Choose the unit for y-axis:", ("Ångstrom", "nm"))
+    st.sidebar.subheader("The file values are in Nanometers (nm) or Angstrom (Å)?")
+    unit = st.sidebar.radio("Choose the unit for y-axis:", ("nm", "Å"))
 
     # File upload section
     st.sidebar.subheader("Upload Files")
@@ -94,6 +94,8 @@ def plot_rmsf(data, unit):
 
         fig = px.line(data, x=data.columns[0], y=y_data.columns, title="RMSF Plot")
         fig.update_yaxes(title_text="RMSF (" + unit + ")")
+        fig.update_layout(
+            legend_title="Trajectory")
         st.plotly_chart(fig)
         # Download button for the plot
         st.download_button(
