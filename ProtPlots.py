@@ -10,7 +10,7 @@ import os
 st.image('HufflePlots.png')
 
 def main():
-    st.title("HUFFAPlots: Protein Dynamics Plots")
+    st.title("HufflePlots: Protein Molecular Dynamics *Harry Plotter*")
     st.sidebar.title("Options")
 
     # Unit selection
