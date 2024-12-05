@@ -72,6 +72,8 @@ def plot_rmsd(data, unit):
 
         fig = px.line(data, x=data.columns[0], y=y_data.columns, title="RMSD Plot")
         fig.update_yaxes(title_text="RMSD (" + unit + ")")
+        fig.update_layout(
+            legend_title="Trajectory")
         st.plotly_chart(fig)
         # Download button for the plot
         st.download_button(
