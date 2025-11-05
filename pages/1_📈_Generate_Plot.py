@@ -1,16 +1,34 @@
-# Re-run the updated Streamlit app code to ensure unit selection and y-axis adjustment works correctly
-# Import necessary libraries
+#ProtPlots.py non-modular version - for streamlit page configuration
+# Modular version can be found in  pages/page1
+
+#Mudança Significativa: Não consegue mais dar scroll e ver os dois gráficos (RMSD/RMSF) ao mesmo tempo. Gráficos são gerados como se fossem abas sobrepostas.
+
 import streamlit as st
 import pandas as pd
 import plotly.express as px
 import os
 
-# Define the app
-
-st.image('HufflePlots.png')
+# --- Main Interface --- In module version, these would be in ProtPlots.py
 
 def main():
-    st.title("HufflePlots: Protein Molecular Dynamics *Harry Plotter*")
+    #Set page config
+    st.set_page_config(
+        page_title="ProtPlots Module",
+        page_icon="📈",
+        layout="centered",
+        initial_sidebar_state="expanded",
+    )
+    # --- Main Interface ---
+    st.title("Harry Plotter: Protein Molecular Dynamics *Harry Plotter*")
+
+    st.write("""
+            Welcome to ProtPlots! This modules uses .csv/.tsv files as input for both RMSD and RMSF plots. It allows comparative visualization of different structures trajectories
+            by adding additional columns in the input files. 
+            """ )
+
+    st.info("You may use the GROMACS Pre-Process Module to convert you RMSD/RMSF .xvg files to .txt files. Upload .txt calculation files in CSV Compile Module to concatenate them into a .csv file"
+    , icon="ℹ️")
+
     st.sidebar.title("Options")
 
     # Unit selection
@@ -41,6 +59,8 @@ def main():
             if rmsd_data is not None:
                 st.dataframe(rmsd_data.head())
                 plot_rmsd(rmsd_data, unit)
+                
+
 
         if rmsf_file:
             st.write("### RMSF Data")
@@ -49,6 +69,8 @@ def main():
                 st.dataframe(rmsf_data.head())
                 plot_rmsf(rmsf_data, unit)
 
+
+# --- Utility Functions --- In module version, these would be in plots_ui.py and plots_utils.py
 # Function to load data
 def load_data(file):
     try:
@@ -66,6 +88,8 @@ def load_data(file):
         st.error("Error loading file: " + str(e))
         return None
 
+# --- Plotting Functions --- In module version, these would be in plot.py
+
 # Function to plot RMSD
 def plot_rmsd(data, unit):
     try:
@@ -78,7 +102,8 @@ def plot_rmsd(data, unit):
         fig.update_layout(
             legend_title="Trajectory")
         st.plotly_chart(fig)
-        # Download button for the plot
+
+        # Download button for the plot - NÃO TÁ APARECENDO MAIX
         st.download_button(
             label="Download RMSD Plot as PNG",
             data=fig.to_image(format="png"),
@@ -110,5 +135,9 @@ def plot_rmsf(data, unit):
     except Exception as e:
         st.error("Error generating RMSF plot: " + str(e))
 
+
+
+
 if __name__ == "__main__":
     main()
+   
